@@ -7,7 +7,6 @@ const WordSample = require('../models/wordSample');
 const WordProgress = require('../models/wordProgress'); // ← bu yok
 
 const { Op } = require("sequelize");
-const userId = 6; // Geçici olarak sabit, sonra oturumdan alırsın
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
@@ -35,9 +34,7 @@ router.get('/kelime-ekle', (req, res) => {
 
 const generateAudio = require('../generate-audio'); // Dosya yolunu kendine göre ayarla
 
-router.get('/kelime-ekle', (req, res) => {
-  res.render('index');
-});
+
 
 // POST kelime ekle
 router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
@@ -78,6 +75,8 @@ router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
   } catch (err) {
     console.error("Kelime eklerken hata:", err);
     res.status(500).send("Sunucu hatası.");
+      throw err; // Eklenmeli
+
   }
 });
 
@@ -143,7 +142,6 @@ router.get('/profile', async (req, res) => {
 router.post('/profil', async (req, res) => {
   const userID = req.session.userID;
   const adet = parseInt(req.body.adet);
-  console.log("Gönderilen adet:", adet);
 
   if (!adet || isNaN(adet)) return res.send("Geçersiz değer!");
 
@@ -152,17 +150,12 @@ router.post('/profil', async (req, res) => {
     { where: { id: userID } }
   );
 
-  console.log("Güncellenen satır sayısı:", updatedCount);
 
   res.redirect('/profile');
 });
 
 
-router.get('/kullanicilar', async (req, res) => {
-  const users = await User.findAll();
-  console.log("Tüm kullanıcılar:", users.map(u => u.dataValues));
-  res.send("Kullanıcılar konsola yazdırıldı.");
-});
+
 
 
 
@@ -267,7 +260,6 @@ router.get('/quiz', async (req, res) => {
 
 // POST: Butona basıldığında rastgele kelimeler gelsin
 router.post('/quiz', async (req, res) => {
-  const userId = 6; // aktif kullanıcı
   const bugun = new Date();
 
   const user = await User.findByPk(userId);
@@ -329,7 +321,6 @@ router.post('/quiz', async (req, res) => {
 
 
 router.post('/quiz-sonuc', async (req, res) => {
-  const userId = 6; // Geçici kullanıcı
   const { wordID, answer, correctAnswer } = req.body;
 
   const temizCevap = answer.trim().toLowerCase();
@@ -375,6 +366,8 @@ router.post('/quiz-sonuc', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Sunucu hatası.");
+      throw err; // Eklenmeli
+
   }
 });
 
@@ -446,6 +439,8 @@ router.post('/quiz-bitir', async (req, res) => {
   } catch (err) {
     console.error("Quiz bitirirken hata:", err);
     res.status(500).send("Sunucu hatası.");
+      throw err; // Eklenmeli
+
   }
 });
 

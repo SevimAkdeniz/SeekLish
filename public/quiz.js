@@ -12,7 +12,6 @@ let sonuclarInput = document.getElementById("sonuclarInput");
 let bitirForm = document.getElementById("bitirForm");
 
 function kelimeyiGoster() {
-  console.log(kelimeler[aktifIndex].audio);
 
   const kelime = kelimeler[aktifIndex];
   soruBaslik.textContent = `Soru ${aktifIndex + 1} / ${kelimeler.length}`;

@@ -66,12 +66,10 @@ router.post("/forgot-password", async (req, res) => {
         return res.status(500).json({ message: "E-posta gönderilemedi." });
       }
 
-      console.log("E-posta başarıyla gönderildi:", info.response);
       return res.render("verify-reset-code", { email });
     });
 
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 });
@@ -81,7 +79,6 @@ router.post("/forgot-password", async (req, res) => {
 router.post("/reset-password", async (req, res) => {
   const { email, newPassword } = req.body;
 
-  console.log("Yeni şifre:", newPassword);  // Terminale yazdır
 
   try {
     const user = await User.findOne({ where: { email } }); // MySQL için güncellendi
@@ -98,12 +95,10 @@ router.post("/reset-password", async (req, res) => {
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await user.update({ password: hashedPassword, resetCode: null, resetCodeExpires: null });
 
-    console.log("Şifre başarıyla güncellendi:", user.password);
 
     return res.render("login", { email });
 
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 });

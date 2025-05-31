@@ -38,7 +38,6 @@ const auth_login_post = async (req, res) => {
             const user = await User.findOne({ where: { email } });
 
             if (!user) {
-                console.log("Kullanıcı bulunamadı");
                 return res.render("login", {
                     errorMessage: "Epostaya ait Kullanıcı bulunamadı.",
                     redirect: req.body.redirect || ""
@@ -52,7 +51,7 @@ const auth_login_post = async (req, res) => {
             //  Şifre karşılaştırma (bcrypt ile)
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
-                console.log("Şifre yanlış");
+              
                 return res.render("login", {
                     errorMessage: "Yanlış şifre girildi.",
                     redirect: req.body.redirect || ""
@@ -62,7 +61,6 @@ const auth_login_post = async (req, res) => {
 
             req.session.userID = user.id;
             req.session.userName = user.UserName;
-            console.log("Aktif kullanıcı ID:", req.session.userID);
 
             // JWT Token oluştur
             const token = createToken(user.id);
@@ -75,7 +73,6 @@ const auth_login_post = async (req, res) => {
 
 
         } catch (e) {
-            console.log(e);
             res.status(500).json({ message: "Sunucu hatası" });
         }
 
@@ -142,7 +139,6 @@ const auth_signup_post = async (req, res) => {
         res.redirect("/login");
 
     } catch (err) {
-        console.log("HATA:", err);
         res.status(500).json({ message: "Kayıt işlemi başarısız" });
     }
 };

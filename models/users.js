@@ -77,19 +77,14 @@ User.auth_login = async function (email, password) {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-        console.log("Kullanıcı bulunamadı:", email);
+    
         throw new Error("Kullanıcı bulunamadı");
     }
 
-    console.log("Girilen şifre:", password);
-    console.log("Veritabanındaki hash:", user.password);
-
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log("Şifre eşleşti mi?:", isMatch);
 
     if (!isMatch) {
-        console.log("Girilen şifre yanlış");
-        throw new Error("Şifre yanlış");
+      throw new Error("Şifre yanlış");
     }
 
     return user;

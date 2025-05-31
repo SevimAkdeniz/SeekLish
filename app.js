@@ -33,17 +33,14 @@ const generateImageRoutes = require('./routes/generate-image');
 // veritabanı senkronizasyonu
 sequelize.sync() 
     .then(() => {
-        console.log("✅ MySQL veritabanı senkronize edildi");
 
         //  Sunucuyu Başlat
         app.listen(3000, () => {
-            console.log(" Sunucu 3000 portunda çalışıyor...");
         });
     })
     .catch(err => console.error("❌ Veritabanı senkronizasyon hatası:", err));
 
 sequelize.sync().then(() => {
-  console.log("Veritabanı senkronize edildi");
 });
 
 

@@ -30,7 +30,6 @@ router.post('/wordchain', async (req, res) => {
     });
 
     const story = response.generations[0].text;
-    console.log("🧠 Hikaye:", story);
 
     // 2. Replicate ile görsel üret
     const replicateResponse = await fetch("https://api.replicate.com/v1/predictions", {
@@ -52,7 +51,6 @@ router.post('/wordchain', async (req, res) => {
     
 
     const prediction = await replicateResponse.json();
-    console.log("🖼️ Replicate cevabı:", prediction);
 
     // 3. Eğer geçersizse işlemeyi bırak
     if (!prediction || !prediction.urls || !prediction.urls.get) {
@@ -76,7 +74,6 @@ router.post('/wordchain', async (req, res) => {
       });
 
       const pollData = await pollRes.json();
-      console.log(`⏳ [${i + 1}] Durum: ${pollData.status}`);
 
       if (pollData.status === "succeeded") {
         finalImage = pollData.output[0];
