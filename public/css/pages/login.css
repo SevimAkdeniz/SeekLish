@@ -1,0 +1,269 @@
+
+a{
+
+    color: red;
+}
+
+
+.page-background{
+    color: rgb(0, 0, 0);
+    background-color: #ffffff;
+    width: 500px;
+    height: 600px;
+    border-radius: 20px;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    box-shadow: 0px 6px 20px rgba(93, 0, 0, 0.433);   
+     z-index: 5;
+   
+    
+}
+
+.login_main {
+    display: flex;
+    height: 100vh;
+    width: 90%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+  }
+  
+  
+  #login_main > div:first-child {
+    width: 50%;
+    background-color: #fff;
+    padding-right: 2rem;
+   
+  }
+  
+
+  #login_main > div:first-child img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+
+  
+#login_form{
+   
+    margin-left: 3rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#login_form input{
+    color: rgb(0, 0, 0);
+    width: 90%;
+    padding: 1rem;
+    margin-top: 1rem;
+    background-color: rgb(255, 255, 255);
+    border: 1px rgb(192, 0, 0) solid;
+    border-radius: 5px;
+    
+    
+}
+#login_form input::placeholder{
+    color: rgb(192, 0, 0);
+}
+
+
+
+
+
+.page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#login_form button{
+    
+    padding: 1rem;
+
+}
+.page button{
+    border: 1px #ffffff solid;
+    border-radius: 50px;
+    background-color: rgb(192, 0, 0);
+    width: 90%;
+    padding: 0.5rem;
+    font-weight: bolder;   
+   margin-top: 1.5rem;
+    font-size: 15px;
+    color: white;
+}
+.page p{
+    
+    font-size: 20px;
+    color: rgb(108, 0, 0);
+}
+
+.page h1{
+    font-size: 30px;
+    padding: 2rem 0;
+    color: rgb(192, 0, 0);
+ 
+}
+
+
+
+
+.or-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: white; /* Yazı rengi */
+    font-size: 15px;
+    width: 90%;
+    padding: 0;
+    margin: 0;
+   
+}
+
+.or-text::before,
+.or-text::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid rgb(131, 0, 0); /* Çizgi rengi */
+    margin: 0 10px; /* Yazıyla çizgi arasındaki boşluk */
+}
+
+
+
+
+
+@media screen and (max-width: 768px) {
+    /* KUTU ORTALAMA VE KÜÇÜLTME */
+    .page-background {
+     
+      width: 80%;
+      height: auto;
+      padding: 1.5rem;
+      flex-direction: column;
+    }
+  
+    /* GİRİŞ KUTUSU VE RESİM ALANI ALT ALTA */
+    #login_main {
+        margin-bottom: 10rem;
+      flex-direction: column;
+      width: 100%;
+    
+     
+    }
+  
+    #login_main > div:last-child {
+      width: 90%;
+      padding: 1rem 0;
+      margin: auto;
+    }
+      
+    
+    #login_main > div:first-child {
+         
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%; /* veya 50%, tasarıma göre */
+          height: 50%; /* isteğe bağlı */
+          
+        }
+      
+     
+
+    #login_main > div:first-child img {
+        margin-top: 2rem;
+          width: 90%;
+          max-width: 400px;
+          
+        }
+      
+  
+      
+    /* FORM ELEMANLARI */
+    #login_form input,
+    #login_form button {
+      width: 90%;
+      font-size: 1rem;
+      padding: 0.75rem;
+    }
+  
+    .page h1 {
+      font-size: 24px;
+    }
+  
+    .page p {
+      font-size: 16px;
+    }
+  
+    .or-text {
+      font-size: 13px;
+    }
+  }
+  
+
+  
+
+  
+  /* ÜST DALGA */
+  .top-wave-container {
+    top: -1rem;
+    left: -0.5rem;
+    width: 110%;
+    height: 300px;
+    position: absolute;
+  }
+  
+  .top-wave {
+    width: 100%;
+    height: 100%;
+    display: block;
+    animation: waveAnimateTop 8s ease-in-out infinite alternate;
+  }
+  
+  @keyframes waveAnimateTop {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  /* ALT DALGA */
+  .bottom-wave-footer {
+    
+    height: 150px;
+    left: -0.5rem;
+    width: 110%;
+    bottom: -1rem;
+    position: absolute;
+  }
+  
+  .bottom-wave {
+    width: 100%;
+    height: 100%;
+    display: block;
+    animation: waveAnimateBottom 8s ease-in-out infinite alternate;
+  }
+  
+  @keyframes waveAnimateBottom {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
