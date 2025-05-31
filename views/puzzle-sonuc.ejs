@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Puzzle Sonuç</title>
+</head>
+<body>
+  <h2><%= mesaj %></h2>
+
+  <% if (yeniKelime) { %>
+    <form action="/puzzle" method="get">
+      <button type="submit">➡️ Yeni Kelimeyle Devam Et</button>
+    </form>
+  <% } else { %>
+    <a href="/profile">👤 Profili Görüntüle</a>
+  <% } %>
+</body>
+</html>

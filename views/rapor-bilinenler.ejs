@@ -1,0 +1,79 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+</head>
+
+<body>
+
+
+    <h2>📋 Bilinen Kelimeler Raporu</h2>
+
+    <h3>📊 Kelime Bilgi Grafiği</h3>
+    <canvas id="kelimeChart" width="3000" height="3000"
+        style="margin: 20px auto; display: block; max-width: 300px;"></canvas>
+
+
+    <table border="1">
+        <tr>
+            <th>İngilizce</th>
+            <th>Türkçe</th>
+            <th>Adım</th>
+            <th>Örnek Cümle(ler)</th>
+        </tr>
+        <% kelimeListesi.forEach(row=> { %>
+            <tr>
+                <td>
+                    <%= row.eng %>
+                </td>
+                <td>
+                    <%= row.tur %>
+                </td>
+                <td>
+                    <%= row.step %>
+                </td>
+                <td>
+                    <%= row.sample %>
+                </td>
+            </tr>
+            <% }) %>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- chartData string olarak gömülür -->
+    <script>
+        const chartDataStr = "<%= JSON.stringify(chartData) %>";
+        const chartData = JSON.parse(chartDataStr);
+
+        const ctx = document.getElementById('kelimeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            options: {
+                cutout: '70%', // halkayı inceltir
+                responsive: true,
+                aspectRatio: 1, // kare şekil
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Bilinen vs Bilinmeyen Kelimeler'
+                    }
+                }
+            }
+
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>

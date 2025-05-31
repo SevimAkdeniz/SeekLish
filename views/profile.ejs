@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Profil</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #kelimeChart {
+      display: block;
+      margin: 20px auto;
+      max-width: 300px;
+    }
+
+
+  @media print {
+    /* Navigasyon, buton ve diğer istenmeyenler gizlensin */
+    #nav-bar, #logoutForm, button, select {
+      display: none !important;
+    }
+
+    /* Yazdırma alanı genişlesin */
+    body, #sectionn {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      page-break-inside: avoid;
+    }
+  }
+
+
+  </style>
+   <link rel="stylesheet" href="still.css">
+
+   <link rel="stylesheet" href="/css/pages/profil.css">
+</head>
+
+<body>
+
+  
+        <nav id="nav-bar">
+            <div>
+                <p>SeekLish</p>
+            </div>
+
+            <div id="links">
+
+
+                <div>
+                    <img width="48" height="48" src="https://img.icons8.com/color-glass/48/abc.png" alt="abc" />
+                    <img width="50" height="50"
+                        src="https://img.icons8.com/external-smashingstocks-outline-color-smashing-stocks/66/external-puzzle-party-and-celebrations-smashingstocks-outline-color-smashing-stocks.png"
+                        alt="external-puzzle-party-and-celebrations-smashingstocks-outline-color-smashing-stocks" />
+                    <img width="50" height="50"
+                        src="https://img.icons8.com/external-others-pike-picture/50/external-brain-dementia-brain-disease-others-pike-picture-8.png"
+                        alt="external-brain-dementia-brain-disease-others-pike-picture-8" />
+                    <img width="48" height="48" src="https://img.icons8.com/color/48/features-list.png"
+                        alt="features-list" />
+                    <img width="58" height="58" src="https://img.icons8.com/arcade/64/user-female-circle.png"
+                        alt="user-female-circle" />
+                </div>
+
+
+                <div>
+                    <p><a href="/quiz">Quiz</a></p>
+                    <p><a href="/puzzle">Bulmaca</a></p>
+                    <p><a href="/wordchain">Hafıza Çivisi</a></p>
+                    <p><a href="/puan-tablosu">Puan Tablosu</a></p>
+                    <p><a href="/profile">Profil</a></p>
+                </div>
+
+
+            </div>
+        </nav>
+
+
+        <form method="POST" action="/logout" id="logoutForm">
+    <button type="submit">🚪 Çıkış Yap</button>
+  </form>
+
+  <!-- İçerik -->
+  <div id="sectionn">
+    <div>
+      <p>Nehir Karabulut</p>
+
+      <form method="POST" action="/profil">
+        <select name="adet">
+          <% [1, 3, 5, 10].forEach(val => { %>
+            <option value="<%= val %>" <%= val == quizCount ? "selected" : "" %>><%= val %> kelime</option>
+          <% }) %>
+        </select>
+        <button type="submit">Kaydet</button>
+      </form>
+
+      <hr>
+
+      <h3>📊 Bilinen vs Bilinmeyen Kelime Grafiği</h3>
+      <canvas id="kelimeChart" width="300" height="300"></canvas>
+
+      <h3>📋 Bilinen Kelimeler</h3>
+      <table border="1">
+        <tr>
+          <th>İngilizce</th>
+          <th>Türkçe</th>
+          <th>Adım</th>
+          <th>Örnek Cümle(ler)</th>
+        </tr>
+        <% kelimeListesi.forEach(row => { %>
+          <tr>
+            <td><%= row.eng %></td>
+            <td><%= row.tur %></td>
+            <td><%= row.step %></td>
+            <td><%= row.sample %></td>
+          </tr>
+        <% }) %>
+      </table>
+      <button onclick="window.print()" style="margin-bottom:20px;">📄 Raporu Yazdır</button>
+
+
+      <script>
+        const chartData = <%- JSON.stringify(chartData) %>;
+
+        const ctx = document.getElementById('kelimeChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Bilinen', 'Bilinmeyen'],
+            datasets: [{
+              data: [chartData.knownCount, chartData.unknownCount],
+              backgroundColor: ['#36a2eb', '#ff6384']
+            }]
+          },
+          options: {
+            cutout: '70%',
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              },
+              title: {
+                display: true,
+                text: 'Bilinen vs Bilinmeyen Kelimeler'
+              }
+            }
+          }
+        });
+      </script>
+    </div>
+  </div>
+
+
+
+   
+
+
+</body>
+
+</html>

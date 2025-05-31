@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Sonuçları</title>
+  <link rel="stylesheet" href="/still.css">
+</head>
+<body>
+  <h2>📊 Quiz Sonuçları</h2>
+
+  <table border="1" cellpadding="10">
+    <thead>
+      <tr>
+        <th>İngilizce</th>
+        <th>Türkçe</th>
+        <th>Sonuç</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (ozet && ozet.length > 0) { %>
+        <% ozet.forEach(item => { %>
+          <tr>
+            <td><%= item.eng %></td>
+            <td><%= item.tur %></td>
+            <td>
+              <% if (item.correct === true) { %>
+                ✅ Doğru
+              <% } else if (item.correct === false) { %>
+                ❌ Yanlış
+              <% } else { %>
+                ⚪️ Cevaplanmadı
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="3">Hiçbir kelime bulunamadı.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+
+  <br>
+  <a href="/profile">🔙 Profili Gör</a>
+  <a href="/quiz">Yeni Quiz</a>
+</body>
+</html>

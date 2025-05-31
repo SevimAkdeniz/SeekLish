@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/pages/signup.css">
+    
+    <title>Document</title>
+</head>
+<body>
+
+    <!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dalgalı Sayfa</title>
+  <link rel="stylesheet" href="still.css">
+</head>
+<body>
+
+  <!-- ÜST MAVİ DALGA -->
+  <div class="top-wave-container">
+    <svg class="top-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="#00aaff" fill-opacity="1" d="
+        M0,64 
+        C120,120 240,0 360,80 
+        C480,160 600,0 720,96 
+        C840,192 960,64 1080,128 
+        C1200,192 1320,64 1440,128 
+        L1440,0 L0,0 Z">
+      </path>
+    </svg>
+  </div>
+
+  <!-- SAYFA İÇERİĞİ -->
+
+    
+  <section id="signup_main" class="login_main">
+
+    <div class="page-background">
+        <div id="signup_page" class="page">
+            <h1>Hesap Oluştur</h1>
+            <% if (typeof errorMessage !== "undefined") { %>
+                <div class="alert alert-danger"><%= errorMessage %></div>
+              <% } %>
+
+            <div id="signup_form">
+                <form action="/signup" method="post">
+                    <input type="text" name = "username" placeholder="kullanıcı adınızı giriniz ">
+                    <input type="email" name ="email" placeholder="e-posta giriniz">
+                    <input type="password" name = "password" placeholder="şifrenizi giriniz">
+                    <div>
+                        <button type="submit" name="role" value="customer">Kayıt Ol</button>
+                       
+                    
+    
+
+                    </div>
+                  
+                </form>
+            </div>
+                
+            <p class="or-text">veya</p>
+            <p>Zaten bir hesabın var mı?   <a href="/login"> Giriş yap</a></p>
+
+            
+        </div>
+    </div>
+
+    <div>
+        <img src="images/exploreSEEKLİSH.png" alt="">
+
+    </div> 
+   
+</section>
+
+
+
+  <!-- ALT YEŞİL DALGA -->
+  <footer class="bottom-wave-footer">
+    <svg class="bottom-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="#00aaff" fill-opacity="1" d="
+        M0,64 
+        C120,120 240,0 360,80 
+        C480,160 600,0 720,96 
+        C840,192 960,64 1080,128 
+        C1200,192 1320,64 1440,128 
+        L1440,320 L0,320 Z">
+      </path>
+    </svg>
+  </footer>
+
+</body>
+</html>
+
+
+
+
+  
+
+
+
+      
+      
+</body>
+</html>

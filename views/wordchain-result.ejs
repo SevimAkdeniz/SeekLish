@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Word Chain Sonuç</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 40px;
+            background-color: #f8f8f8;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .kelimeler {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+
+        .hikaye {
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Word Chain Sonucu</h1>
+
+    <div class="kelimeler">
+        <p>Girilen Kelimeler: <%= kelimeler.join(", ") %></p>
+  </div>
+
+  <div class=" hikaye">
+                <h3>Yapay Zeka Tarafından Oluşturulan Hikaye:</h3>
+                <p>
+                    <%= story %>
+                </p>
+    </div>
+
+    <div style="text-align:center; margin-top: 30px;">
+        <a href="/wordchain">
+            <button>Yeni Hikaye Oluştur</button>
+        </a>
+    </div>
+
+
+   <% if (imageUrl) { %>
+  <h3>Yapay Zeka Görseli</h3>
+  <img src="<%= imageUrl %>" alt="Görsel" width="400">
+<% } else { %>
+  <p>Görsel oluşturulamadı ya da henüz hazır değil.</p>
+<% } %>
+
+</body>
+
+</html>

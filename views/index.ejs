@@ -1,0 +1,170 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="still.css">
+</head>
+
+<body>
+    <div id="index">
+
+        <nav id="nav-bar">
+            <div>
+                <p>SeekLish</p>
+            </div>
+
+            <div id="links">
+
+
+                <div>
+                    <img width="48" height="48" src="https://img.icons8.com/color-glass/48/abc.png" alt="abc" />
+                    <img width="50" height="50"
+                        src="https://img.icons8.com/external-smashingstocks-outline-color-smashing-stocks/66/external-puzzle-party-and-celebrations-smashingstocks-outline-color-smashing-stocks.png"
+                        alt="external-puzzle-party-and-celebrations-smashingstocks-outline-color-smashing-stocks" />
+                    <img width="50" height="50"
+                        src="https://img.icons8.com/external-others-pike-picture/50/external-brain-dementia-brain-disease-others-pike-picture-8.png"
+                        alt="external-brain-dementia-brain-disease-others-pike-picture-8" />
+                    <img width="48" height="48" src="https://img.icons8.com/color/48/features-list.png"
+                        alt="features-list" />
+                    <img width="58" height="58" src="https://img.icons8.com/arcade/64/user-female-circle.png"
+                        alt="user-female-circle" />
+                </div>
+
+
+                <div>
+                    <p><a href="/quiz">Quiz</a></p>
+                    <p><a href="/puzzle">Bulmaca</a></p>
+                    <p><a href="/wordchain">Hafıza Çivisi</a></p>
+                    <p><a href="/puan-tablosu">Puan Tablosu</a></p>
+                    <p><a href="/profile">Profil</a></p>
+                </div>
+
+
+            </div>
+        </nav>
+
+
+
+
+
+        <div id="section">
+            <div>
+
+                <div class="hero-content">
+                    <h1>Eğlenceli bir şekilde İngilizce öğrenin!</h1>
+                    <p>Etkinlik tabanlı platformumuzla milyonlarca kişiye katılın.</p>
+                    <a href="#" class="cta-button">Başlayın</a>
+                </div>
+                <div id="image-part">
+                    slm
+
+                </div>
+
+            </div>
+
+
+            <div id="card-contanier">
+
+
+                <div>
+
+
+                    <div class="card">
+                        <img src="images/puzzle-5294291_1280.jpg" alt="Card 1">
+                        <div class="card-content">
+                            <h3>Hafıza Çivisi </h3>
+                            <p>Start learning basic English words and grammar with fun games.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="images/puzzle-5294291_1280.jpg" alt="Card 2">
+                        <div class="card-content">
+                            <h3>Quiz </h3>
+                            <p>Improve your skills with real-world examples and quizzes.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="images/puzzle-5294291_1280.jpg" alt="Card 3">
+                        <div class="card-content">
+                            <h3>Bulmaca</h3>
+                            <p>Master fluency with conversations and complex challenges.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+            <div>
+
+
+
+                sistemimize kelime eklemek ister misiniz?
+                <h2>Yeni Kelime Ekle</h2>
+                <form action="/kelime-ekle" method="POST" enctype="multipart/form-data">
+                    <input type="text" name="engWord" placeholder="English Word" required>
+                    <input type="text" name="turWord" placeholder="Turkish Word" required>
+                    <input type="text" name="sample1" placeholder="Sample Sentence 1" required>
+                    <input type="text" name="sample2" placeholder="Sample Sentence 2">
+                    <input type="text" name="sample3" placeholder="Sample Sentence 3">
+
+                    <input type="file" name="picture" accept="image/*" required>
+
+                    <button type="submit">Kaydet</button>
+
+
+
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <script>
+        document.getElementById("gorselOlustur").addEventListener("click", async () => {
+            const word = document.getElementById("engWord").value.trim();
+            if (!word) return alert("Önce kelimeyi gir!");
+
+            const btn = document.getElementById("gorselOlustur");
+            btn.disabled = true;
+            btn.textContent = "Yükleniyor...";
+
+            const res = await fetch(`/generate-image?word=${encodeURIComponent(word)}`);
+            const data = await res.json();
+
+            document.getElementById("preview").src = data.path;
+            document.getElementById("pictureInput").value = data.path;
+
+            btn.textContent = "Görsel Oluştur";
+            btn.disabled = false;
+        });
+    </script>
+
+
+</body>
+
+</html>

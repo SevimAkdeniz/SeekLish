@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/pages/forgot-password.css">
+</head>
+<body>
+
+    <div class="forgot-password-main">
+        <div class="forgot-password">
+            <div>
+                <div id="forgot-password-text">
+                    <label for="resetCode" style="font-size: 18px;">Lütfen mailinize gelen doğrulama kodunu giriniz</label>
+  
+                </div>
+                <div>
+                    <form action="/verify-reset-code" method="POST">
+                        <input type="hidden" name="email" value="<%= email %>">
+                        
+                        
+                        <input type="text" name="resetCode" required>
+            
+                        <button type="submit">Kodu Doğrula</button>
+                    </form>
+                   
+                </div>  
+                
+            </div>
+
+        </div>
+
+    </div>
+
+    <h2>Şifre Sıfırlama Kodu</h2>
+
+
+    <% if (typeof errorMessage !== "undefined" && errorMessage) { %>
+        <script>
+          alert("<%- errorMessage %>");
+        </script>
+      <% } %>
+        
+</body>
+</html>

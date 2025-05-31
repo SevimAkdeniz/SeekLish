@@ -1,0 +1,120 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/pages/login.css">
+
+
+  <title>Document</title>
+
+</head>
+
+<body>
+
+
+  <div class="top-wave-container">
+    <svg class="top-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="#00aaff" fill-opacity="1" d="
+            M0,64 
+            C120,120 240,0 360,80 
+            C480,160 600,0 720,96 
+            C840,192 960,64 1080,128 
+            C1200,192 1320,64 1440,128 
+            L1440,0 L0,0 Z">
+      </path>
+    </svg>
+  </div>
+
+  <!-- SAYFA İÇERİĞİ -->
+  <main>
+
+
+    <section class="login_main" id="login_main">
+
+
+      <div>
+        <img src="images/exploreSEEKLİSH.png" alt="">
+
+      </div>
+
+      <div class="page-background">
+        <div class="page">
+          <h1>Seek'e Giriş Yap</h1>
+          <% if (typeof errorMessage !=="undefined" ) { %>
+            <div class="alert alert-danger">
+              <%= errorMessage %>
+            </div>
+            <% } %>
+
+
+              <div id="login_form">
+
+
+
+                <form action="/login" method="post">
+                    <input type="hidden" name="redirect" value="<%= redirect %>">
+                  <input type="text" name="email" placeholder="e-posta giriniz">
+                  <input type="password" name="password" placeholder="şifrenizi giriniz">
+                  <button>Giriş yap</button>
+
+
+
+                </form>
+              </div>
+
+
+              <p><a href="/forgot-password">Şifremi unuttum</a></p>
+              <p class="or-text">veya</p>
+              <p>Henüz bir hesabın yok mu? <a href="/signup"> Kaydol</a></p>
+
+
+        </div>
+      </div>
+
+    </section>
+
+
+
+  </main>
+
+  <!-- ALT YEŞİL DALGA -->
+  <footer class="bottom-wave-footer">
+    <svg class="bottom-wave" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <path fill="#00aaff" fill-opacity="1" d="
+            M0,64 
+            C120,120 240,0 360,80 
+            C480,160 600,0 720,96 
+            C840,192 960,64 1080,128 
+            C1200,192 1320,64 1440,128 
+            L1440,320 L0,320 Z">
+      </path>
+    </svg>
+  </footer>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

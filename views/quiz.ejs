@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz</title>
+  <link rel="stylesheet" href="/still.css">
+</head>
+
+<body>
+  <div id="quiz-container">
+    <div id="soru-baslik"></div>
+    <div id="soru-alani"></div>
+    <p id="ornek-cumle" style="font-style: italic; margin-bottom: 20px;"></p>
+
+    <!-- Görsel buraya -->
+
+    <div id="kelime-gorseli" style="margin-bottom: 20px;"></div>
+<audio id="ses" controls style="margin-top: 10px; "></audio>
+
+
+    <div id="secenekler"></div>
+    <p id="sonuc-mesaji"></p>
+
+    <div style="margin-top: 20px;">
+      <button id="onceki">⬅️ Önceki</button>
+      <button id="sonraki">Sonraki ➡️</button>
+      <form id="bitirForm" action="/quiz-bitir" method="POST">
+        <input type="hidden" name="sonuclar" id="sonuclarInput">
+        <button id="bitirBtn" type="submit" style="margin-top:20px;">📊 Quiz’i Bitir</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const raw = "<%- encodeURIComponent(JSON.stringify(kelimeler || [])) %>";
+    const kelimeler = JSON.parse(decodeURIComponent(raw));
+  </script>
+  <script src="/quiz.js"></script>
+</body>
+
+</html>
