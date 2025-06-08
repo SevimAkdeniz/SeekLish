@@ -10,7 +10,7 @@ const cohere = new CohereClient({
   token: process.env.CO_API_KEY,
 });
 
-router.get('/wordchain',  (req, res) => {
+router.get('/wordchain', (req, res) => {
   res.render('wordchain-form');
 });
 
@@ -41,19 +41,19 @@ router.post('/wordchain', async (req, res) => {
       body: JSON.stringify({
         version: "ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4", // ✅ en son stabil SD versiyon
         input: {
-         prompt : `A children's book illustration of: ${word1}, ${word2}, ${word3}, ${word4}, and ${word5}.`,
+          prompt: `A children's book illustration of: ${word1}, ${word2}, ${word3}, ${word4}, and ${word5}.`,
 
           width: 512,
           height: 512
         }
       })
     });
-    
+
 
     const prediction = await replicateResponse.json();
 
     // 3. Eğer geçersizse işlemeyi bırak
-    if (!prediction || !prediction.urls || !prediction.urls.get) {
+    if (!prediction?.urls?.get) {
       console.error("❌ Görsel üretim URL'si alınamadı:", prediction);
       return res.render("wordchain-result", {
         kelimeler,
@@ -61,6 +61,7 @@ router.post('/wordchain', async (req, res) => {
         imageUrl: null
       });
     }
+
 
     const predictionURL = prediction.urls.get;
 
@@ -94,7 +95,7 @@ router.post('/wordchain', async (req, res) => {
     });
 
 
-    
+
 
   } catch (err) {
     console.error("🔥 LLM veya görsel hatası:", err);

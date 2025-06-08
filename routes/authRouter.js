@@ -71,6 +71,7 @@ router.post("/forgot-password", async (req, res) => {
 
   } catch (err) {
     return res.status(500).json({ message: "Sunucu hatası" });
+    
   }
 });
 
@@ -162,6 +163,7 @@ router.post("/verify-reset-code", async (req, res) => {
     return res.render("reset-password", { email });
   } catch (err) {
     console.error(err);
+    
     return res.render("verify-reset-code", {
       email,
       errorMessage: "Sunucu hatası oluştu. Lütfen tekrar deneyin."

@@ -7,8 +7,7 @@ const WordSample = require('../models/wordSample');
 const WordProgress = require('../models/wordProgress'); // ← bu yok
 
 const { Op } = require("sequelize");
-const axios = require("axios");
-const fs = require("fs");
+  const fs = require("fs");
 const path = require("path");
 
 
@@ -414,7 +413,6 @@ router.post('/quiz-bitir', async (req, res) => {
       if (!progress) continue;
 
       // 👇 Doğru/Yanlış/Geçilen tüm durumlar
-      let dogruMu = false;
 
       if (correct === true) {
         if (progress.step < 5) {
@@ -425,7 +423,6 @@ router.post('/quiz-bitir', async (req, res) => {
           progress.isKnown = true;
           progress.nextTestDate = new Date('2100-01-01');
         }
-        dogruMu = true;
         toplamPuan += 10; // ✅ Doğru: +10
       } else if (correct === false) {
         progress.step = 0;
