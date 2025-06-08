@@ -7,6 +7,7 @@ require("dotenv").config()
 const wordchainRoutes = require('./routes/wordchain');
 
 
+const User = require('./models/users'); // yol doğruysa
 
 const progressRoutes = require('./routes/progress');
 
@@ -91,9 +92,20 @@ WordProgress.belongsTo(Word, { foreignKey: 'WordID' });
 // sayfalar
 
 
-app.get("/", (req, res) => {
-    res.render("index");
+app.get("/", async (req, res) => {
+  try {
+    const users = await User.findAll({
+      order: [['puan', 'DESC']],
+      limit: 3
+    });
+
+    res.render("index", { users });
+  } catch (err) {
+    console.error("Anasayfa hatası:", err);
+    res.status(500).send("Sunucu hatası");
+  }
 });
+
 
 app.get('/login', (req, res) => {
   const redirect = req.query.redirect || '/';

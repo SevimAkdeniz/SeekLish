@@ -50,19 +50,6 @@
 
 
         <div id="section">
-            <div>
-
-                <div class="hero-content">
-                    <h1>Eğlenceli bir şekilde İngilizce öğrenin!</h1>
-                    <p>Etkinlik tabanlı platformumuzla milyonlarca kişiye katılın.</p>
-                    <a href="#" class="cta-button">Başlayın</a>
-                </div>
-                <div id="image-part">
-                    slm
-
-                </div>
-
-            </div>
 
 
             <div id="card-contanier">
@@ -72,27 +59,39 @@
 
 
                     <div class="card">
-                        <img src="images/puzzle-5294291_1280.jpg" alt="Card 1">
-                        <div class="card-content">
-                            <h3>Hafıza Çivisi </h3>
-                            <p>Start learning basic English words and grammar with fun games.</p>
-                        </div>
+                        <a href="/wordchain">
+                            <img src="images/puzzle-5294291_1280.jpg" alt="Card 1">
+                            <div class="card-content">
+                                <h3> puzzle</h3>
+                                <p>Start learning basic English words and grammar with fun games.</p>
+                            </div>
+
+                        </a>
+
                     </div>
 
                     <div class="card">
-                        <img src="images/puzzle-5294291_1280.jpg" alt="Card 2">
-                        <div class="card-content">
-                            <h3>Quiz </h3>
-                            <p>Improve your skills with real-world examples and quizzes.</p>
-                        </div>
+                        <a href="/quiz">
+                            <img src="images/resim1.jpg" alt="Card 2">
+                            <div class="card-content">
+                                <h3>Quiz </h3>
+                                <p>Improve your skills with real-world examples and quizzes.</p>
+                            </div>
+
+                        </a>
+
                     </div>
 
                     <div class="card">
-                        <img src="images/puzzle-5294291_1280.jpg" alt="Card 3">
-                        <div class="card-content">
-                            <h3>Bulmaca</h3>
-                            <p>Master fluency with conversations and complex challenges.</p>
-                        </div>
+                        <a href="/puzzle">
+                            <img src="images/resim2.jpg" alt="Card 3">
+                            <div class="card-content">
+                                <h3>Hafıza</h3>
+                                <p>Master fluency with conversations and complex challenges.</p>
+                            </div>
+
+                        </a>
+
                     </div>
 
                 </div>
@@ -106,12 +105,41 @@
             </div>
 
 
+            <div id="leaders">
+                <div class="leader-header">
+                    <div class="line"></div>
+                    <p id="lider">Liderler</p>
+                    <div class="line"></div>
+                </div>
 
-            <div>
+                <div class="top-users">
+                    <div class="user second">
+                        <p>🥈 2. <%= users[1]?.username || '-' %>
+                        </p>
+                        <p>
+                            <%= users[1]?.puan || 0 %> puan
+                        </p>
+                    </div>
+                    <div class="user first">
+                        <p>🥇 1. <%= users[0]?.username || '-' %>
+                        </p>
+                        <p>
+                            <%= users[0]?.puan || 0 %> puan
+                        </p>
+                    </div>
+                    <div class="user third">
+                        <p>🥉 3. <%= users[2]?.username || '-' %>
+                        </p>
+                        <p>
+                            <%= users[2]?.puan || 0 %> puan
+                        </p>
+                    </div>
+                </div>
+            </div>
 
 
 
-                sistemimize kelime eklemek ister misiniz?
+            <div class="kelime-formu">
                 <h2>Yeni Kelime Ekle</h2>
                 <form action="/kelime-ekle" method="POST" enctype="multipart/form-data">
                     <input type="text" name="engWord" placeholder="English Word" required>
@@ -119,17 +147,13 @@
                     <input type="text" name="sample1" placeholder="Sample Sentence 1" required>
                     <input type="text" name="sample2" placeholder="Sample Sentence 2">
                     <input type="text" name="sample3" placeholder="Sample Sentence 3">
-
                     <input type="file" name="picture" accept="image/*" required>
-
                     <button type="submit">Kaydet</button>
-
-
-
-
                 </form>
-
             </div>
+
+
+
 
 
         </div>

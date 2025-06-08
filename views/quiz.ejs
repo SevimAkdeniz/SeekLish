@@ -4,10 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Quiz</title>
-  <link rel="stylesheet" href="/still.css">
+  <link rel="stylesheet" href="/nav.css">
+<link rel="stylesheet" href="/css/pages/game-pages/quiz.css">
+
 </head>
 
 <body>
+
+  <%- include('inc/nav') %>
+  
+
+
   <div id="quiz-container">
     <div id="soru-baslik"></div>
     <div id="soru-alani"></div>
@@ -16,7 +23,7 @@
     <!-- Görsel buraya -->
 
     <div id="kelime-gorseli" style="margin-bottom: 20px;"></div>
-<audio id="ses" controls style="margin-top: 10px; "></audio>
+    <audio id="ses" controls style="margin-top: 10px; "></audio>
 
 
     <div id="secenekler"></div>

@@ -32,7 +32,7 @@ const WordProgress = sequelize.define('WordProgress', {
   }
 },
 {
-  tableName: 'WordProgress', // ✅ BURADA OLMALI (2. parametre olarak)
+  tableName: 'WordProgress',
   timestamps: false
 });
 

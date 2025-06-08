@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Puan Tablosu</title>
+  <link rel="stylesheet" href="/nav.css">
+  <link rel="stylesheet" href="/css/pages/game-pages/puan-tablosu.css">
+  
+</head>
+<body>
+  <%- include('inc/nav') %>
+
+  <div class="leaderboard-container">
+    <h2>🏆 Puan Tablosu</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sıra</th>
+          <th>Kullanıcı</th>
+          <th>Puan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach((user, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= user.username %></td>
+            <td><%= user.puan %> ⭐</td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

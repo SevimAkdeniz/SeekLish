@@ -5,9 +5,9 @@ const Word = require('../models/word');
 const User = require("../models/users")
 const WordSample = require('../models/wordSample');
 const WordProgress = require('../models/wordProgress'); // ← bu yok
-
+const sequelize = require('../config/database'); // en üste varsa tekrar yazma
 const { Op } = require("sequelize");
-  const fs = require("fs");
+const fs = require("fs");
 const path = require("path");
 
 
@@ -31,11 +31,11 @@ router.get('/kelime-ekle', (req, res) => {
 
 
 
-const generateAudio = require('../generate-audio'); // Dosya yolunu kendine göre ayarla
+const generateAudio = require('../generate-audio'); 
 
 
 
-// POST kelime ekle
+//  kelime ekle
 router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
   try {
     const { engWord, turWord, sample1, sample2, sample3 } = req.body;
@@ -45,7 +45,7 @@ router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
       return res.send("Eksik bilgi var.");
     }
 
-    // 1. Kelimeyi Words tablosuna ekle, Audio şimdilik boş bırak
+ 
     const word = await Word.create({
       EngWordName: engWord,
       TurWordName: turWord,
@@ -53,7 +53,6 @@ router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
       Audio: null
     });
 
-    // 2. Örnek cümleleri ekle
     const samples = [sample1, sample2, sample3].filter(s => s && s.trim() !== '');
     for (const sample of samples) {
       await WordSample.create({
@@ -62,11 +61,9 @@ router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
       });
     }
 
-    // 3. Ses dosyasını otomatik oluştur ve yolunu al
     const audioFileName = `${engWord.toLowerCase().replace(/[^a-z0-9]/g, '')}.mp3`;
     const audioUrl = await generateAudio(engWord, audioFileName);
 
-    // 4. Kelimenin Audio alanını güncelle
     word.Audio = audioUrl;
     await word.save();
 
@@ -86,6 +83,7 @@ router.get('/profile', async (req, res) => {
   const userID = req.session.userID;
   if (!userID) return res.redirect('/login');
 
+  
   const user = await User.findByPk(userID);
   const quizCount = user?.quizCount || 5;
 
@@ -99,7 +97,6 @@ router.get('/profile', async (req, res) => {
     unknownCount: unknown.length
   };
 
-  // Bilinen kelimeleri Word ve örnek cümlelerle çek
   const rapor = await WordProgress.findAll({
     where: { UserID: userID, isKnown: true },
     include: [
@@ -110,7 +107,6 @@ router.get('/profile', async (req, res) => {
     ]
   });
 
-  // Aynı WordID tekrar etmesin diye filtrele
   const uniqueWords = {};
   const kelimeListesi = [];
 
@@ -132,7 +128,9 @@ router.get('/profile', async (req, res) => {
   res.render('profile', {
     quizCount,
     chartData,
-    kelimeListesi
+    kelimeListesi,
+     puan: user.puan,
+      user 
   });
 });
 
@@ -156,14 +154,25 @@ router.post('/profil', async (req, res) => {
 
 
 
+router.get("/puan-tablosu", async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["username", "puan"],
+      order: [["puan", "DESC"]],
+    });
 
-const sequelize = require('../config/database'); // en üste varsa tekrar yazma
+    res.render("puan-tablosu", { users });
+  } catch (err) {
+    res.status(500).send("Sunucu hatası");
+  }
+});
 
 
-// GET: İlk açıldığında sadece buton gözüksün
-// Yardımcı fonksiyonlar (en üste koyabilirsin)
 
-// 1. Eksik WordProgress kayıtlarını tamamla
+
+
+
+
 async function eksikWordProgressleriTamamla(userID) {
   const allWords = await Word.findAll();
   for (const word of allWords) {
@@ -183,7 +192,6 @@ async function eksikWordProgressleriTamamla(userID) {
   }
 }
 
-// 2. Yeni öğrenilecek kelimeleri getir
 async function getYeniKelimeler(userID, quizCount) {
   return await WordProgress.findAll({
     where: { UserID: userID, isKnown: false, step: 0 },
@@ -193,7 +201,6 @@ async function getYeniKelimeler(userID, quizCount) {
   });
 }
 
-// 3. Test zamanı gelen kelimeleri getir
 async function getTestKelimeler(userID) {
   const bugun = new Date();
   return await WordProgress.findAll({
@@ -208,7 +215,6 @@ async function getTestKelimeler(userID) {
   });
 }
 
-// 4. Kelimeleri örnek cümle, yanlış şıklar ve diğer verilerle zenginleştir
 async function kelimeleriZenginlestir(kelimeler) {
   return await Promise.all(kelimeler.map(async item => {
     const word = item.Word;
@@ -275,14 +281,12 @@ router.get('/quiz', async (req, res) => {
 
 
 
-// POST: Butona basıldığında rastgele kelimeler gelsin
 router.post('/quiz', async (req, res) => {
   const bugun = new Date();
 
   const user = await User.findByPk(userId);
   const adet = user.quizCount || 5;
 
-  // 1. step >=1 olanlar → test zamanı gelenler
   const testKelimeler = await WordProgress.findAll({
     where: {
       UserID: userId,
@@ -294,7 +298,6 @@ router.post('/quiz', async (req, res) => {
 
   const testWordIDs = testKelimeler.map(wp => wp.WordID);
 
-  // 2. Yeni kelimeleri bul (step = 0 ve daha önce yukarıda gelmemiş olanlar)
   const mevcutIDs = testWordIDs.length > 0 ? { [Op.notIn]: testWordIDs } : {};
 
   const yeniKelimeler = await WordProgress.findAll({
@@ -307,16 +310,13 @@ router.post('/quiz', async (req, res) => {
     order: sequelize.random()
   });
 
-  // ❗️İŞTE BURADA tanımlıyoruz
   const yeniIDs = yeniKelimeler.map(wp => wp.WordID);
   const toplamKelimeIDs = [...testWordIDs, ...yeniIDs].slice(0, adet);
 
-  // 3. Kelime detaylarını al
   const words = await Word.findAll({
     where: { WordID: toplamKelimeIDs }
   });
 
-  // 4. Cümleleri ekle
   const enriched = await Promise.all(words.map(async word => {
     const sample = await WordSample.findOne({
       where: { WordID: word.WordID },
@@ -378,12 +378,11 @@ router.post('/quiz-sonuc', async (req, res) => {
 
     await progress.save();
 
-    // View'e mesajı gönder
     res.render('quiz-sonuc', { durumMesaji });
   } catch (err) {
     console.error(err);
     res.status(500).send("Sunucu hatası.");
-      throw err; // Eklenmeli
+      throw err;
 
   }
 });
@@ -395,12 +394,12 @@ router.post('/quiz-bitir', async (req, res) => {
   if (!userID) return res.redirect('/login');
 
   try {
-    const cevaplar = JSON.parse(req.body.sonuclar); // [{ wordID, correct }, ...]
-    const stepDelays = [1, 7, 30, 90, 180, 365]; // gün cinsinden
+    const cevaplar = JSON.parse(req.body.sonuclar); 
+    const stepDelays = [1, 7, 30, 90, 180, 365]; 
     const ozet = [];
     let toplamPuan = 0;
 
-    const user = await User.findByPk(userID); // ❗️tek seferde alındı
+    const user = await User.findByPk(userID); 
 
     for (const cevap of cevaplar) {
       const { wordID, correct } = cevap;
@@ -412,7 +411,6 @@ router.post('/quiz-bitir', async (req, res) => {
       });
       if (!progress) continue;
 
-      // 👇 Doğru/Yanlış/Geçilen tüm durumlar
 
       if (correct === true) {
         if (progress.step < 5) {
@@ -423,14 +421,14 @@ router.post('/quiz-bitir', async (req, res) => {
           progress.isKnown = true;
           progress.nextTestDate = new Date('2100-01-01');
         }
-        toplamPuan += 10; // ✅ Doğru: +10
+        toplamPuan += 10; 
       } else if (correct === false) {
         progress.step = 0;
         progress.isKnown = false;
         progress.nextTestDate = new Date(Date.now() + stepDelays[0] * 86400000);
-        toplamPuan -= 5; // ❌ Yanlış: -5
+        toplamPuan -= 5; 
       } else {
-        // 🟡 Geçilen
+     
         toplamPuan += 0;
       }
 
@@ -439,22 +437,22 @@ router.post('/quiz-bitir', async (req, res) => {
       ozet.push({
         eng: word.EngWordName,
         tur: word.TurWordName,
-        correct: correct // true/false/null direkt gönderiyoruz
+        correct: correct
       });
     }
 
-    // ✅ En son puanı güncelle
+  
     if (user) {
       user.puan += toplamPuan;
       await user.save();
     }
 
-    res.render('quiz-sonuc', { ozet, toplamPuan }); // 🎯 skor gösterimi için
+    res.render('quiz-sonuc', { ozet, toplamPuan }); // skor gösterimi için
 
   } catch (err) {
     console.error("Quiz bitirirken hata:", err);
     res.status(500).send("Sunucu hatası.");
-      throw err; // Eklenmeli
+      throw err; 
 
   }
 });
@@ -516,7 +514,7 @@ router.get('/rapor/bilinenler', async (req, res) => {
     where: { UserID: userID, isKnown: true },
     include: [{
       model: Word,
-      include: [WordSample] // 💡 buraya koymalısın
+      include: [WordSample] 
     }]
   });
 

@@ -42,11 +42,10 @@ const User = sequelize.define("User", {
         type: DataTypes.INTEGER,
         defaultValue: 0,
         allowNull: false,
-        // ❗ MySQL'deki gerçek sütun adı küçük olabilir
     },
      puan: {
       type: DataTypes.INTEGER,
-      defaultValue: 0 // başlangıç puanı
+      defaultValue: 0 
     },
 
     quizCount: {

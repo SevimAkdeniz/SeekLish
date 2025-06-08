@@ -1,0 +1,124 @@
+#sectionn {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Kullanıcı adı */
+#sectionn > div > p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Select + Kaydet */
+form select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-right: 10px;
+}
+
+form button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #0056b3;
+}
+
+/* Ayırıcı */
+hr {
+  margin: 30px 0;
+}
+
+/* Grafik başlığı ve grafik */
+h3 {
+  margin-top: 30px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h3::before {
+  content: '📊';
+  font-size: 20px;
+}
+
+/* Grafik */
+#kelimeChart {
+  display: block;
+  margin: 25px auto;
+  max-width: 350px;
+}
+
+/* Tablo başlığı */
+h3 + h3::before {
+  content: '📋';
+}
+
+/* Tablo */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+table th,
+table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: top;
+}
+
+table th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+/* Yazdırma butonu */
+button#printBtn {
+  display: block;
+  margin: 30px auto 10px;
+  background-color: #28a745;
+  border: none;
+  padding: 0.3rem;
+  border-radius: 3px;
+  color: white;
+}
+
+button#printBtn:hover {
+  background-color: #218838;
+}
+
+/* Yazdırma görünümü */
+@media print {
+  #nav-bar,
+  #logoutForm,
+  button:not(#printBtn),
+  select {
+    display: none !important;
+  }
+
+  body, #sectionn {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+}

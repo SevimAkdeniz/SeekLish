@@ -18,9 +18,9 @@ const WordSample = sequelize.define('WordSample', {
 }, {
   tableName: 'WordSamples',
   timestamps: false,
-  id: false  // ❗ EN ÖNEMLİ SATIR: Sequelize'a "id ekleme" diyoruz
+  id: false 
 });
 
 
-// 🔥 ilişkiyi BURADA değil, ayrı bir dosyada tanımlayacağız
+
 module.exports = WordSample;

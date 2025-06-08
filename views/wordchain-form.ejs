@@ -1,42 +1,33 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8">
   <title>Word Chain Oluştur</title>
-  <style>
-    body {
-      font-family: Arial;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px;
-    }
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="/css/pages/game-pages/word-chain.css">
 
-    input {
-      padding: 10px;
-      margin: 5px;
-      font-size: 16px;
-    }
 
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin-top: 15px;
-    }
-  </style>
 </head>
-<body>
-  <h1>Word Chain: 5 Kelime Gir</h1>
 
-  <form method="POST" action="/wordchain">
-    <input type="text" name="word1" placeholder="1. kelime" required>
-    <input type="text" name="word2" placeholder="2. kelime" required>
-    <input type="text" name="word3" placeholder="3. kelime" required>
-    <input type="text" name="word4" placeholder="4. kelime" required>
-    <input type="text" name="word5" placeholder="5. kelime" required>
-    <br>
-    <button type="submit">Hikaye Oluştur</button>
-  </form>
+<body>
+  <%- include('inc/nav') %>
+    <div class="container">
+      <h1>Word Chain: 5 Kelime Gir</h1>
+
+      <form method="POST" action="/wordchain">
+        <input type="text" name="word1" placeholder="1. kelime" required>
+        <input type="text" name="word2" placeholder="2. kelime" required>
+        <input type="text" name="word3" placeholder="3. kelime" required>
+        <input type="text" name="word4" placeholder="4. kelime" required>
+        <input type="text" name="word5" placeholder="5. kelime" required>
+        <br>
+        <button type="submit">Hikaye Oluştur</button>
+      </form>
+    </div>
+
+
 </body>
+
 </html>
 s

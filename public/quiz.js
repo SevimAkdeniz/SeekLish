@@ -25,10 +25,7 @@ function kelimeyiGoster() {
   sesElementi.src = kelime.audio;
   sesElementi.load();
   sesElementi.play().catch(() => { });
-    // eklenmeli
-
-
-
+ 
 
 
   seceneklerAlani.innerHTML = "";
@@ -42,7 +39,6 @@ function kelimeyiGoster() {
     buton.className = "secenek-btn";
     buton.style.margin = "4px";
 
-    // Cevaplanmışsa disable yap
     if (mevcut) buton.disabled = true;
 
     buton.onclick = (e) => {

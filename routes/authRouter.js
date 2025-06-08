@@ -82,7 +82,7 @@ router.post("/reset-password", async (req, res) => {
 
 
   try {
-    const user = await User.findOne({ where: { email } }); // MySQL için güncellendi
+    const user = await User.findOne({ where: { email } }); 
 
     if (!user) {
       return res.status(400).json({ message: "Bu e-posta adresine kayıtlı hesap bulunamadı." });
@@ -92,19 +92,17 @@ router.post("/reset-password", async (req, res) => {
       return res.status(400).json({ message: "Yeni şifre boş olamaz!" });
     }
 
-    // **ÖNEMLİ:** `pre("save")` iki kez hash'lemesin diye, `directSave` kullan!
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await user.update({ password: hashedPassword, resetCode: null, resetCodeExpires: null });
 
 
-    return res.render("login", { email });
+return res.redirect("/login");
 
   } catch (err) {
     return res.status(500).json({ message: "Sunucu hatası" });
   }
 });
 
-// kod dogrulama işlemleri
 router.post("/verify-reset-code", async (req, res) => {
   const { email, resetCode } = req.body;
 
@@ -121,7 +119,6 @@ router.post("/verify-reset-code", async (req, res) => {
       });
     }
 
-    // Kod süresi geçmiş mi?
     if (!user.resetCode || user.resetCodeExpires < new Date()) {
       return res.render("verify-reset-code", {
         email,
@@ -129,7 +126,6 @@ router.post("/verify-reset-code", async (req, res) => {
       });
     }
 
-    // 3'ten fazla yanlış giriş varsa
     if (user.resetCodeAttempts >= 3) {
       await user.update({
         resetCode: null,
@@ -142,7 +138,6 @@ router.post("/verify-reset-code", async (req, res) => {
       });
     }
 
-    // Kod yanlışsa
     if (user.resetCode !== resetCode) {
       const newAttempts = user.resetCodeAttempts + 1;
       await user.update({ resetCodeAttempts: newAttempts });
@@ -153,7 +148,6 @@ router.post("/verify-reset-code", async (req, res) => {
       });
     }
 
-    // Kod doğruysa → reset kodlarını sıfırla
     await user.update({
       resetCode: null,
       resetCodeExpires: null,

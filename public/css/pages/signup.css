@@ -96,7 +96,7 @@ a{
 
 
   
-.page button{ /*  ortak  */
+.page button{ 
     border: 1px #ffffff solid;
     border-radius: 50px;
     background-color: rgb(192, 0, 0);
@@ -138,10 +138,8 @@ a{
 
 
 
-/* responsive ayarları */
 
 @media screen and (max-width: 768px) {
-    /* KUTU ORTALAMA VE KÜÇÜLTME */
     .page-background {
       margin-top: 20REM;
       width: 80%;
@@ -150,7 +148,6 @@ a{
       flex-direction: column;
     }
   
-    /* GİRİŞ KUTUSU VE RESİM ALANI ALT ALTA */
     #signup_main {
       flex-direction: column;
       width: 100%;
@@ -175,7 +172,6 @@ a{
       margin: auto;
     }
   
-    /* FORM ELEMANLARI */
     #signup_form input,
     #signup_form button {
       width: 100%;

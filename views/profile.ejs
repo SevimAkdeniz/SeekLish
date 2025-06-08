@@ -33,58 +33,25 @@
 
 
   </style>
-   <link rel="stylesheet" href="still.css">
+  <link rel="stylesheet" href="/css/pages/game-pages/profil.css">
+   <link rel="stylesheet" href="nav.css">
 
-   <link rel="stylesheet" href="/css/pages/profil.css">
 </head>
+
 
 <body>
 
+          <%- include('inc/nav') %>
+
   
-        <nav id="nav-bar">
-            <div>
-                <p>SeekLish</p>
-            </div>
-
-            <div id="links">
-
-
-                <div>
-                    <img width="48" height="48" src="https://img.icons8.com/color-glass/48/abc.png" alt="abc" />
-                    <img width="50" height="50"
-                        src="https://img.icons8.com/external-smashingstocks-outline-color-smashing-stocks/66/external-puzzle-party-and-celebrations-smashingstocks-outline-color-smashing-stocks.png"
-                        alt="external-puzzle-party-and-celebrations-smashingstocks-outline-color-smashing-stocks" />
-                    <img width="50" height="50"
-                        src="https://img.icons8.com/external-others-pike-picture/50/external-brain-dementia-brain-disease-others-pike-picture-8.png"
-                        alt="external-brain-dementia-brain-disease-others-pike-picture-8" />
-                    <img width="48" height="48" src="https://img.icons8.com/color/48/features-list.png"
-                        alt="features-list" />
-                    <img width="58" height="58" src="https://img.icons8.com/arcade/64/user-female-circle.png"
-                        alt="user-female-circle" />
-                </div>
-
-
-                <div>
-                    <p><a href="/quiz">Quiz</a></p>
-                    <p><a href="/puzzle">Bulmaca</a></p>
-                    <p><a href="/wordchain">Hafıza Çivisi</a></p>
-                    <p><a href="/puan-tablosu">Puan Tablosu</a></p>
-                    <p><a href="/profile">Profil</a></p>
-                </div>
-
-
-            </div>
-        </nav>
-
-
-        <form method="POST" action="/logout" id="logoutForm">
-    <button type="submit">🚪 Çıkış Yap</button>
-  </form>
+     
 
   <!-- İçerik -->
   <div id="sectionn">
     <div>
-      <p>Nehir Karabulut</p>
+<p>Kullanıcı <%= user.username %> <strong><%= puan %></strong> ⭐</p>
+</p>
+      <p style="font-weight: normal;">   Günlük kelime sayısını seçin</p>
 
       <form method="POST" action="/profil">
         <select name="adet">
@@ -97,7 +64,7 @@
 
       <hr>
 
-      <h3>📊 Bilinen vs Bilinmeyen Kelime Grafiği</h3>
+      <h3> Bilinen vs Bilinmeyen Kelime Grafiği</h3>
       <canvas id="kelimeChart" width="300" height="300"></canvas>
 
       <h3>📋 Bilinen Kelimeler</h3>
@@ -117,7 +84,7 @@
           </tr>
         <% }) %>
       </table>
-      <button onclick="window.print()" style="margin-bottom:20px;">📄 Raporu Yazdır</button>
+      <button onclick="window.print()" style="margin-bottom:20px;"id="printBtn">📄 Raporu Yazdır</button>
 
 
       <script>
@@ -148,6 +115,11 @@
           }
         });
       </script>
+      
+        <form method="POST" action="/logout" id="logoutForm">
+    <button type="submit">🚪 Çıkış Yap</button>
+  </form>
+
     </div>
   </div>
 
