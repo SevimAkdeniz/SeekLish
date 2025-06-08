@@ -12,7 +12,6 @@ function kelimeKaristir(arr) {
   return arr.sort(() => 0.5 - Math.random());
 }
 
-// İlk giriş
 router.get('/puzzle', async (req, res) => {
   const userID = req.session.userID;
   if (!userID) return res.redirect('/login');
@@ -26,10 +25,10 @@ router.get('/puzzle', async (req, res) => {
   }
 
   const random = kelimeKaristir(knownWords)[0];
-  res.render('puzzle', { word: random.EngWordName.toLowerCase() });
+  res.render('puzzle', { word: random }); 
 });
 
-// AJAX POST tahmin kontrol
+
 router.post('/puzzle-tahmin', async (req, res) => {
   const userID = req.session.userID;
   if (!userID) return res.status(401).json({ hata: "Giriş yapılmamış." });
@@ -37,32 +36,19 @@ router.post('/puzzle-tahmin', async (req, res) => {
   const { tahmin, hedef } = req.body;
   const temiz = tahmin.trim().toLowerCase();
   const hedefKelime = hedef.trim().toLowerCase();
+
   let mesaj = "";
-  let puan = 0;
-
   if (temiz === hedefKelime) {
-    mesaj = "✅ Bildin! +15 puan";
-    puan = 15;
-
-    const user = await User.findByPk(userID);
-    if (user) {
-      user.puan = (user.puan || 0) + puan;
-      await user.save();
-    }
+    mesaj = "✅ Bildin! Süper!";
   } else {
-    mesaj = "❌ Yanlış cevap. -5 puan";
-    puan = -5;
-
-    const user = await User.findByPk(userID);
-    if (user) {
-      user.puan = (user.puan || 0) + puan;
-      await user.save();
-    }
+    mesaj = "❌ Yanlış. Bir dahakine olur!";
   }
 
-  // Yeni kelime
   const knownWords = await Word.findAll({
-    include: [{ model: WordProgress, where: { isKnown: true, UserID: userID } }]
+    include: [{
+      model: WordProgress,
+      where: { isKnown: true, UserID: userID }
+    }]
   });
 
   if (knownWords.length === 0) {
@@ -70,10 +56,14 @@ router.post('/puzzle-tahmin', async (req, res) => {
   }
 
   const random = kelimeKaristir(knownWords)[0];
+
   return res.json({
     mesaj,
-    yeniKelime: random.EngWordName.toLowerCase()
+    yeniKelime: random.EngWordName.toLowerCase(),
+    yeniKelimeID: random.id
   });
 });
+
+
 
 module.exports = router;

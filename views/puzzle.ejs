@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
   <meta charset="UTF-8">
   <title>Kelime Bulmaca</title>
-
   <link rel="stylesheet" href="/nav.css">
   <link rel="stylesheet" href="/css/pages/game-pages/puzzle.css">
-
-
 </head>
-
 <body>
+
   <%- include('inc/nav') %>
 
-    
-<div id="section"></div>
-        <main class="container">
-          <h2>Kelimeyi Tahmin Et</h2>
+  <main class="container">
+    <h2>Kelimeyi Tahmin Et</h2>
 
-          <% if (word) { %>
-            <div id="board"></div>
-            <div style="margin-top: 10px;">
-              <input type="text" id="guessInput" maxlength="<%= word.length %>">
-              <button onclick="checkGuess()">Tahmin Et</button>
-            </div>
-            <p id="mesaj"></p>
+    <% if (word) { %>
+      <input type="hidden" id="kelimeId" value="<%= word.id %>">
+      <div id="board"></div>
 
-            <form action="/profile" method="get">
-              <button type="submit">🛑 Oyunu Bitir</button>
-            </form>
-            <% } else { %>
-              <p>Henüz bilinen kelimeniz yok.</p>
-              <% } %>
-        </main>
+      <div style="margin-top: 10px;">
+        <input type="text" id="guessInput" maxlength="<%= word.EngWordName.length %>">
+        <button onclick="checkGuess()">Tahmin Et</button>
+      </div>
 
+      <p id="mesaj"></p>
 
-    <script>
-      let hedefKelime = "<%= word %>";
-      const harfSayisi = hedefKelime.length;
-      const maxTahmin = 6;
-      let tahminSayisi = 0;
+      <form action="/profile" method="get">
+        <button type="submit">🛑 Oyunu Bitir</button>
+      </form>
+    <% } else { %>
+      <p>Henüz bilinen kelimeniz yok.</p>
+    <% } %>
+  </main>
 
-      const board = document.getElementById("board");
-      const mesaj = document.getElementById("mesaj");
+  <% if (word) { %>
+  <script>
+    let hedefKelime = "<%= word.EngWordName.toLowerCase() %>";
+    let hedefKelimeID = document.getElementById("kelimeId").value;
+    let harfSayisi = hedefKelime.length;
+    const maxTahmin = 6;
+    let tahminSayisi = 0;
 
-      const inputBoxes = [];
+    const board = document.getElementById("board");
+    const mesaj = document.getElementById("mesaj");
+    const inputBoxes = [];
+
+    function boardSifirla() {
+      board.innerHTML = "";
+      inputBoxes.length = 0;
+
       for (let i = 0; i < maxTahmin; i++) {
         const row = document.createElement("div");
         row.className = "row";
@@ -62,75 +64,60 @@
         inputBoxes.push(cells);
         board.appendChild(row);
       }
+    }
 
-      async function checkGuess() {
-        const input = document.getElementById("guessInput");
-        const tahmin = input.value.toLowerCase();
-        if (tahmin.length !== harfSayisi) return alert(`${harfSayisi} harfli kelime gir!`);
+    boardSifirla();
 
-        const cells = inputBoxes[tahminSayisi];
-        for (let i = 0; i < harfSayisi; i++) {
-          cells[i].value = tahmin[i];
-          if (tahmin[i] === hedefKelime[i]) {
-            cells[i].classList.add("correct");
-          } else if (hedefKelime.includes(tahmin[i])) {
-            cells[i].classList.add("exist");
-          } else {
-            cells[i].classList.add("wrong");
-          }
-        }
+    async function checkGuess() {
+      const input = document.getElementById("guessInput");
+      const tahmin = input.value.toLowerCase();
+      if (tahmin.length !== harfSayisi) return alert(`${harfSayisi} harfli kelime gir!`);
 
-        if (tahmin === hedefKelime) {
-          mesaj.innerText = "✅ Doğru! Yeni kelime geliyor...";
-
-          const response = await fetch('/puzzle-tahmin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tahmin, hedef: hedefKelime })
-          });
-
-          const data = await response.json();
-          if (data.bitti) return mesaj.innerText = "Tüm kelimeleri bildin!";
-
-          mesaj.innerText = data.mesaj;
-          hedefKelime = data.yeniKelime;
-          input.value = "";
-          tahminSayisi = 0;
-
-          // Reset board
-          inputBoxes.forEach(row => row.forEach(cell => {
-            cell.value = "";
-            cell.className = "cell";
-          }));
-
-          return;
+      const cells = inputBoxes[tahminSayisi];
+      for (let i = 0; i < harfSayisi; i++) {
+        cells[i].value = tahmin[i];
+        if (tahmin[i] === hedefKelime[i]) {
+          cells[i].classList.add("correct");
+        } else if (hedefKelime.includes(tahmin[i])) {
+          cells[i].classList.add("exist");
         } else {
-          tahminSayisi++;
-          if (tahminSayisi >= maxTahmin) {
-            mesaj.innerText = "❌ Bilemedin. Yeni kelime geliyor...";
-            const response = await fetch('/puzzle-tahmin', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ tahmin, hedef: hedefKelime })
-            });
-            const data = await response.json();
-            if (data.bitti) return mesaj.innerText = "Kelime kalmadı.";
+          cells[i].classList.add("wrong");
+        }
+      }
 
-            mesaj.innerText = data.mesaj;
-            hedefKelime = data.yeniKelime;
-            input.value = "";
-            tahminSayisi = 0;
+      tahminSayisi++;
 
-            inputBoxes.forEach(row => row.forEach(cell => {
-              cell.value = "";
-              cell.className = "cell";
-            }));
-          }
+      if (tahmin === hedefKelime || tahminSayisi >= maxTahmin) {
+        mesaj.innerText = tahmin === hedefKelime
+          ? "✅ Doğru! Yeni kelime geliyor..."
+          : "❌ Bilemedin. Yeni kelime geliyor...";
+
+        const response = await fetch('/puzzle-tahmin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tahmin, hedef: hedefKelime })
+        });
+
+        const data = await response.json();
+
+        if (data.bitti) {
+          mesaj.innerText = "🎉 Tüm kelimeleri çözdün!";
+          return;
         }
 
+        hedefKelime = data.yeniKelime;
+        hedefKelimeID = data.yeniKelimeID;
+        harfSayisi = hedefKelime.length;
+        document.getElementById("guessInput").setAttribute("maxlength", harfSayisi);
+
+        tahminSayisi = 0;
+        input.value = "";
+        boardSifirla(); 
+      } else {
         input.value = "";
       }
-    </script>
+    }
+  </script>
+  <% } %>
 </body>
-
 </html>
