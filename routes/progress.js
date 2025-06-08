@@ -40,6 +40,7 @@ router.get('/progress-tamamla', async (req, res) => {
   } catch (err) {
     console.error("Progress tamamla hatası:", err);
     res.status(500).send("Bir hata oluştu.");
+    throw err;
   }
 });
 

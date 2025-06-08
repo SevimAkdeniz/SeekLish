@@ -75,7 +75,6 @@ router.post('/kelime-ekle', upload.single('picture'), async (req, res) => {
   } catch (err) {
     console.error("Kelime eklerken hata:", err);
     res.status(500).send("Sunucu hatası.");
-      throw err; // Eklenmeli
 
   }
 });
@@ -145,7 +144,7 @@ router.post('/profil', async (req, res) => {
 
   if (!adet || isNaN(adet)) return res.send("Geçersiz değer!");
 
-  const [updatedCount] = await User.update(
+   await User.update(
     { quizCount: adet },
     { where: { id: userID } }
   );
@@ -163,22 +162,15 @@ const sequelize = require('../config/database'); // en üste varsa tekrar yazma
 
 
 // GET: İlk açıldığında sadece buton gözüksün
-router.get('/quiz', async (req, res) => {
-  
-  const userID = req.session.userID;
-  if (!userID) return res.redirect('/login');
+// Yardımcı fonksiyonlar (en üste koyabilirsin)
 
-  const bugun = new Date();
-  const user = await User.findByPk(userID);
-  const quizCount = user.quizCount || 5;
-
-  // ✅ Eksik WordProgress kayıtlarını tamamlama
+// 1. Eksik WordProgress kayıtlarını tamamla
+async function eksikWordProgressleriTamamla(userID) {
   const allWords = await Word.findAll();
   for (const word of allWords) {
     const mevcut = await WordProgress.findOne({
       where: { UserID: userID, WordID: word.WordID }
     });
-
     if (!mevcut) {
       await WordProgress.create({
         UserID: userID,
@@ -190,17 +182,22 @@ router.get('/quiz', async (req, res) => {
       });
     }
   }
+}
 
-  // 1. Yeni öğrenilecek kelimeler
-  const yeniKelimeler = await WordProgress.findAll({
+// 2. Yeni öğrenilecek kelimeleri getir
+async function getYeniKelimeler(userID, quizCount) {
+  return await WordProgress.findAll({
     where: { UserID: userID, isKnown: false, step: 0 },
     include: [Word],
     order: sequelize.random(),
     limit: quizCount
   });
+}
 
-  // 2. Test zamanı gelenler
-  const testKelimeler = await WordProgress.findAll({
+// 3. Test zamanı gelen kelimeleri getir
+async function getTestKelimeler(userID) {
+  const bugun = new Date();
+  return await WordProgress.findAll({
     where: {
       UserID: userID,
       isKnown: false,
@@ -210,11 +207,11 @@ router.get('/quiz', async (req, res) => {
     include: [Word],
     order: sequelize.random()
   });
+}
 
-  const kelimeler = [...yeniKelimeler, ...testKelimeler];
-
-  // 3. Her kelimeye 3 yanlış seçenek ekle
-  const enriched = await Promise.all(kelimeler.map(async item => {
+// 4. Kelimeleri örnek cümle, yanlış şıklar ve diğer verilerle zenginleştir
+async function kelimeleriZenginlestir(kelimeler) {
+  return await Promise.all(kelimeler.map(async item => {
     const word = item.Word;
     const correctAnswer = word.TurWordName;
 
@@ -245,11 +242,32 @@ router.get('/quiz', async (req, res) => {
       secenekler,
       picture: word.Picture,
       sample: sample?.Samples || "Örnek cümle yok.",
-       audio: word.Audio || ""
+      audio: word.Audio || ""
     };
   }));
+}
 
-  res.render('quiz', { kelimeler: enriched });
+router.get('/quiz', async (req, res) => {
+  const userID = req.session.userID;
+  if (!userID) return res.redirect('/login');
+
+  const user = await User.findByPk(userID);
+  const quizCount = user.quizCount || 5;
+
+  try {
+    await eksikWordProgressleriTamamla(userID);
+
+    const yeniKelimeler = await getYeniKelimeler(userID, quizCount);
+    const testKelimeler = await getTestKelimeler(userID);
+    const kelimeler = [...yeniKelimeler, ...testKelimeler];
+
+    const enriched = await kelimeleriZenginlestir(kelimeler);
+
+    res.render('quiz', { kelimeler: enriched });
+  } catch (err) {
+    console.error("Quiz sayfasında hata:", err);
+    return res.status(500).send("Sunucu hatası.");
+  }
 });
 
 

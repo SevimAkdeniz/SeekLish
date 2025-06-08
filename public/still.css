@@ -123,12 +123,7 @@ a{text-decoration: none;
 
 
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f0f4f8;
-  padding: 2rem;
-  margin: 0;
-}
+
 
 #card-contanier>div{
 
@@ -182,10 +177,6 @@ body {
   font-size: 0.95rem;
 }
 
-#image-part{
-    background-color: blue;
-}
-
 
 #section>div:first-child{
     display: flex;
@@ -198,6 +189,8 @@ body {
     border-radius: 10px;
     height: 18rem;
     margin: 2rem;
+        background-color: blue;
+
 }
 
 body {
@@ -208,10 +201,11 @@ body {
   padding: 0;
 }
 
+
 #quiz-container {
   max-width: 600px;
-  margin: 80px auto;
-  background: white;
+  margin: 100px auto;
+  background: #fff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -253,15 +247,7 @@ button:hover {
 
 
 
-#quiz-container {
-  max-width: 600px;
-  margin: 100px auto;
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
-}
+
 
 #soru-alani {
   font-size: 24px;

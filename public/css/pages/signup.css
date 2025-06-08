@@ -73,17 +73,7 @@ a{
 }
 
 
-.or-text {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: white; /* Yazı rengi */
-    font-size: 15px;
-    width: 90%;
-    padding: 0;
-    margin: 0;
-   
-}
+
 
 .or-text::before,
 .or-text::after {
@@ -99,7 +89,6 @@ a{
     height: 100vh;
     width: 90%;
     background-color: rgb(255, 255, 255);
-    display: flex;
     justify-content: center; 
     align-items: center; 
   }

@@ -27,7 +27,6 @@ const WordProgress = require("./models/wordProgress")
 
 const puzzleRoutes = require('./routes/puzzle');
 
-const generateImageRoutes = require('./routes/generate-image');
 
 
 // veritabanı senkronizasyonu
@@ -62,7 +61,6 @@ app.use(session({
 app.use(wordchainRoutes);
 app.use(progressRoutes);
 app.use(puzzleRoutes);
-app.use(generateImageRoutes)
 app.use(wordRoutes); // 🔁 Bu satır en sonda değil, login gibi şeylerden sonra olmalı
 app.use(authRoutes);
 

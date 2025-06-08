@@ -21,10 +21,11 @@ function kelimeyiGoster() {
   <img src="${kelime.picture}" alt="Kelime görseli" style="max-width:150px; max-height:150px;">
 `;
 
-const sesElementi = document.getElementById("ses");
-sesElementi.src = kelime.audio;
-sesElementi.load();
-sesElementi.play().catch(() => {});
+  const sesElementi = document.getElementById("ses");
+  sesElementi.src = kelime.audio;
+  sesElementi.load();
+  sesElementi.play().catch(() => { });
+    // eklenmeli
 
 
 

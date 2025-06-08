@@ -99,6 +99,7 @@ router.post('/wordchain', async (req, res) => {
   } catch (err) {
     console.error("🔥 LLM veya görsel hatası:", err);
     res.send("Bir şeyler ters gitti.");
+    throw err;
   }
 
 

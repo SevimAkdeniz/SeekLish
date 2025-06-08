@@ -1,87 +1,68 @@
 // gerekli modeller
-
 const jwt = require("jsonwebtoken");
-const User = require("../models/users"); // ✅ MySQL Modelini Kullan
+const User = require("../models/users");
 const bcrypt = require("bcryptjs");
 const maxAge = 60 * 60 * 24;
-const Word = require("../models/word"); // 🔁 Word tablosu modeli
-const WordProgress = require("../models/wordProgress"); // ⬅ Eğer yoksa bu da eklenmeli
+const Word = require("../models/word");
+const WordProgress = require("../models/wordProgress");
 
+// Güvenli redirect listesi
+const allowedRedirects = ["/", "/admin", "/profil", "/test", "/wordchain", "/dashboard"];
 
-// jswonweb token olusturuyoruz
+// JWT token oluştur
 const createToken = (id) => {
     return jwt.sign({ id }, "gizli", { expiresIn: maxAge });
 };
 
 // Giriş Sayfası
 const auth_login = (req, res) => {
-    const redirect = req.query.redirect || "/";
+    const rawRedirect = req.query.redirect || "/";
+    const redirect = allowedRedirects.includes(rawRedirect) ? rawRedirect : "/";
     res.render("login", { redirect, errorMessage: null });
-
-
-
-
 };
 
 // Kullanıcı Girişi İşlemi
 const auth_login_post = async (req, res) => {
-    const { email, password, redirect } = req.body;
+    const { email, password, redirect: rawRedirect } = req.body;
+    const redirect = allowedRedirects.includes(rawRedirect) ? rawRedirect : "/";
 
-
-    if (email == "sevimakdeniz7@gmail.com" && password == "sev") {  // admin sayfası
-        res.redirect("/admin")
-
-
-    } else {
-        try {
-            // MySQL için Sequelize findOne kullanımı
-            const user = await User.findOne({ where: { email } });
-
-            if (!user) {
-                return res.render("login", {
-                    errorMessage: "Epostaya ait Kullanıcı bulunamadı.",
-                    redirect: req.body.redirect || ""
-                });
-
-
-
-
-            }
-
-            //  Şifre karşılaştırma (bcrypt ile)
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-              
-                return res.render("login", {
-                    errorMessage: "Yanlış şifre girildi.",
-                    redirect: req.body.redirect || ""
-                });
-
-            }
-
-            req.session.userID = user.id;
-            req.session.userName = user.UserName;
-
-            // JWT Token oluştur
-            const token = createToken(user.id);
-            res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-            res.redirect(redirect);
-
-
-
-
-
-
-        } catch (e) {
-            res.status(500).json({ message: "Sunucu hatası" });
-        }
-
+    if (email == "sevimakdeniz7@gmail.com" && password == "sev") {
+        return res.redirect("/admin");
     }
 
+    try {
+        const user = await User.findOne({ where: { email } });
 
+        if (!user) {
+            return res.render("login", {
+                errorMessage: "Epostaya ait kullanıcı bulunamadı.",
+                redirect
+            });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.render("login", {
+                errorMessage: "Yanlış şifre girildi.",
+                redirect
+            });
+        }
+
+        req.session.userID = user.id;
+        req.session.userName = user.UserName;
+
+        const token = createToken(user.id);
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+
+        res.redirect(redirect);
+
+    } catch (err) {
+        res.status(500).json({ message: "Sunucu hatası" });
+        throw err;
+    }
 };
 
-// Kayıt Sayfasını Göster
+// Kayıt Sayfası
 const auth_signup = (req, res) => {
     res.render("signup");
 };
@@ -96,17 +77,16 @@ const auth_signup_post = async (req, res) => {
 
         if (userMail) {
             return res.render("signup", {
-                    errorMessage: "Bu epostaya ait hesap var.",
-                    redirect: req.body.redirect || ""
-                });
-
+                errorMessage: "Bu epostaya ait hesap var.",
+                redirect: "/"
+            });
         }
+
         if (userNam) {
             return res.render("signup", {
-                    errorMessage: "Kullanıcı adı kullanılıyor.",
-                    redirect: req.body.redirect || ""
-                });
-
+                errorMessage: "Kullanıcı adı kullanılıyor.",
+                redirect: "/"
+            });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -118,13 +98,9 @@ const auth_signup_post = async (req, res) => {
             password: hashedPassword,
         });
 
-        // ✅ UserID çek
         const userID = newUser.UserID || newUser.id;
-
-        // ✅ Tüm kelimeleri çek
         const allWords = await Word.findAll();
 
-        // ✅ Progress kayıtlarını oluştur
         for (const word of allWords) {
             await WordProgress.create({
                 UserID: userID,
@@ -140,10 +116,9 @@ const auth_signup_post = async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ message: "Kayıt işlemi başarısız" });
+        throw err;
     }
 };
-
-
 
 module.exports = {
     auth_login,
