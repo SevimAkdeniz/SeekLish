@@ -71,4 +71,4 @@ Bu proje MIT lisansı altındadır. Ayrıntılar için `LICENSE` dosyasına baka
 
 ---
 
-“Öğrenmeyi oyunlaştırdık, unutmayı imkansız hale getirdik.” – SeekLish Ekibi
+
