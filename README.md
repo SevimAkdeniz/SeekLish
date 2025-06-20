@@ -60,9 +60,6 @@ http://localhost:3000
 3. Değişikliklerinizi commit'leyin  
 4. Pull request gönderin
 
-## Lisans
-
-Bu proje MIT lisansı altındadır. Ayrıntılar için `LICENSE` dosyasına bakabilirsiniz.
 
 ## İletişim
 
